@@ -3,9 +3,9 @@
 ## Test command and environment
 - GitHub Actions environment: Ubuntu 26.04; CPython 3.11.17; pytest 9.2.0.
 - `python -m pip install -r requirements-dev.txt`: **passed**.
-- `python -m pytest -q`: **247 passed in 0.19s**.
+- `python -m pytest -q`: **247 passed in 0.21s**.
 - `python -m main`: **passed**; output: `{'order_id': 'O-7', 'partner_id': 'P-2', 'pickup_minutes': 13, 'eta_minutes': 35, 'reason': 'assigned'}`.
-- CI run: [Python tests — run #1](https://github.com/raohardik2805/SmartDispatch-Open-Source-Evaluation/actions/runs/41095755965) completed successfully. It checked out the branch, installed requirements, ran the complete pytest suite, and ran the demo.
+- CI run: [Python tests — run #1](https://github.com/raohardik2805/SmartDispatch-Open-Source-Evaluation/actions/runs/41096247196) completed successfully. It checked out the branch, installed requirements, ran the complete pytest suite, and ran the demo.
 - Baseline: not run before editing; no baseline count is claimed.
 
 ## Edge-case evidence
