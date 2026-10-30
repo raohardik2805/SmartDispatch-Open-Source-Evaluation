@@ -1,11 +1,11 @@
 # Testing Notes
 
 ## Test command and environment
-- Python version used for local validation: 3.13.5; pytest 9.0.2.
-- `python -m pip install -r requirements-dev.txt`: completed successfully (pytest was already installed and satisfied the requirement).
-- `python -m pytest -q`: **247 passed in 0.23s**.
-- `python -m main`: exited 0 and printed `{'order_id': 'O-7', 'partner_id': 'P-2', 'pickup_minutes': 13, 'eta_minutes': 35, 'reason': 'assigned'}`.
-- Execution note: outbound DNS prevented a direct `git clone`, so the local test workspace was assembled from the branch's fetched source files and test modules. The test modules were recreated from the fetched repository contents; this is local validation of the fetched branch code, not a GitHub-hosted Actions run. The added GitHub Actions workflow has not yet produced a visible run.
+- GitHub Actions environment: Ubuntu 26.04; CPython 3.11.17; pytest 9.2.0.
+- `python -m pip install -r requirements-dev.txt`: **passed**.
+- `python -m pytest -q`: **247 passed in 0.19s**.
+- `python -m main`: **passed**; output: `{'order_id': 'O-7', 'partner_id': 'P-2', 'pickup_minutes': 13, 'eta_minutes': 35, 'reason': 'assigned'}`.
+- CI run: [Python tests — run #1](https://github.com/raohardik2805/SmartDispatch-Open-Source-Evaluation/actions/runs/41095755965) completed successfully. It checked out the branch, installed requirements, ran the complete pytest suite, and ran the demo.
 - Baseline: not run before editing; no baseline count is claimed.
 
 ## Edge-case evidence
@@ -27,4 +27,4 @@
 - Input immutability for assignment and cancellation.
 
 ## Remaining failures or limitations
-GitHub-hosted CI remains pending even though the local fetched-source test run passed. This implementation is in-memory; it does not provide durable idempotency across process restarts or transactional updates across concurrent workers.
+The GitHub Actions run passed all configured checks. This implementation is in-memory; it does not provide durable idempotency across process restarts or transactional updates across concurrent workers.
