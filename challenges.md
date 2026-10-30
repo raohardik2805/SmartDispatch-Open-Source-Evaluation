@@ -1,23 +1,21 @@
-# challenges.md - COMPULSORY submission
+# Challenges
 
-This file is mandatory and worth 5 marks. Describe your actual experience honestly. Do not invent difficulties to fill the page.
+## Challenge: cancellation event replay
+A cancellation event may be delivered more than once. The starter removed an order if present and appended the event ID, but did not check whether that event ID had already been processed. Replay handling therefore depended only on whether the order happened to remain in the active-order list.
 
-## 1. Challenge or confusing behaviour
-What candidate-selection, ETA, capacity, missing-data, tie-breaking, or cancellation case was difficult to understand?
+## Evidence from the starter
+The original `process_cancellation` implementation unconditionally appended `event_id` after attempting to remove the order. The contract tests require a duplicate cancellation to leave workload at zero and record the event ID only once. The acceptance suite also exercises repeated event IDs and workload underflow boundaries.
 
-## 2. Evidence
-Summarize the relevant assertion, log, output, or minimal reproducible example.
+## Investigation and resolution
+- Inspected the original cancellation function and the contract/acceptance assertions.
+- Added an early replay check against `processed_cancellation_ids`.
+- The replay check occurs before order removal or workload adjustment, so a duplicate ID with a different order payload cannot release another order's workload.
+- Kept the function non-mutating by working on a deep copy.
 
-## 3. What I tried
-List debugging steps or experiments you actually performed and what each one showed.
+## Other edge conditions addressed
+- Missing routes and invalid/non-finite time values make ETA estimates ineligible rather than being treated as zero.
+- Candidate filtering rejects inactive partners and invalid/full capacity records.
+- Invalid identifiers and malformed order/partner records fail closed.
 
-## 4. Resolution
-What was the root cause? What did you change, and why did it address the cause rather than hide the symptom?
-
-## 5. Proof and regression prevention
-Which test(s) demonstrate the fix? What related case might still break?
-
-## 6. Unresolved challenge or next step
-State remaining limitations and how you would investigate them next.
-
-If you did not encounter a major blocker, say so honestly and describe the hardest edge case you deliberately tested and what it taught you. Do not manufacture a story.
+## Verification and limitations
+Regression cases were added, but their execution result is pending the GitHub Actions run. No test pass is claimed here. The implementation is in-memory and does not provide durable event storage or cross-process exactly-once guarantees; a production service would need persistent idempotency keys and transactional workload updates.
