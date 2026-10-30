@@ -18,4 +18,4 @@ The original `process_cancellation` implementation unconditionally appended `eve
 - Invalid identifiers and malformed order/partner records fail closed.
 
 ## Verification and limitations
-Regression cases were added, but their execution result is pending the GitHub Actions run. No test pass is claimed here. The implementation is in-memory and does not provide durable event storage or cross-process exactly-once guarantees; a production service would need persistent idempotency keys and transactional workload updates.
+The regression suite passed in GitHub Actions: **247 passed**. The demo also exited successfully; exact output is recorded in `TESTING.md`. The implementation is in-memory and does not provide durable event storage or cross-process exactly-once guarantees; a production service would need persistent idempotency keys and transactional workload updates.
