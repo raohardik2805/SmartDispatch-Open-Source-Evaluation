@@ -1,24 +1,28 @@
-# TESTING.md — Required submission
-
-Complete this file with test evidence from your own work. Include at least five edge cases. Do not claim a test passed unless you ran it.
+# Testing Notes
 
 ## Test command and environment
-- Python version:
-- Command run:
-- Actual test summary:
+- Python version: Not available in the current connector-only execution environment.
+- Required commands: `python -m pip install -r requirements-dev.txt`, `python -m pytest -q`, `python -m main`.
+- Actual test summary: Not yet available. The repository's GitHub Actions workflow runs these checks on pull requests. Results will be added after the workflow completes.
+- Baseline: Not run before editing; no baseline count is claimed.
 
 ## Edge-case evidence
 
 | # | Case / input | Expected behaviour | Actual result | Test name or evidence |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| 1 | Either required travel leg is absent | Candidate is ineligible; ETA is null | Pending automated run | Existing missing-route tests |
+| 2 | Travel time is negative, boolean, string, NaN or infinity | Candidate is ineligible | Pending automated run | Existing acceptance matrix |
+| 3 | Partner is inactive or at/over capacity | Partner is not selected | Pending automated run | Existing contract and capacity tests |
+| 4 | Two eligible partners have equal ETA | Lexicographically smaller partner ID wins | Pending automated run | Existing tie-break tests |
+| 5 | Same cancellation event is replayed | Workload is released once and event ID appears once | Pending automated run | Existing contract and cancellation matrix |
+| 6 | Same event ID is replayed with a different order ID | Replay is ignored before changing the second order | Pending automated run | New changed-payload replay regression |
+| 7 | Invalid capacity or non-boolean active flag | Partner is not selected | Pending automated run | New capacity and active-state regressions |
 
 ## Regression tests added
-List the defects fixed and the tests added to prevent them from returning.
+- Invalid time/workload values and malformed records.
+- Invalid partner capacity and non-boolean active state.
+- Cancellation replay with a changed payload.
+- Input immutability for assignment and cancellation.
 
 ## Remaining failures or limitations
-List any known failing tests or unresolved behaviours honestly.
+Automated results are pending. This implementation is in-memory; it does not provide durable idempotency across process restarts or transactional updates across concurrent workers.
