@@ -5,12 +5,12 @@ import math
 
 def _valid_minutes(value):
     """Return whether value is a finite, non-negative number (excluding bool)."""
-    return (
-        isinstance(value, (int, float))
-        and not isinstance(value, bool)
-        and math.isfinite(value)
-        and value >= 0
-    )
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(value) and value >= 0
+    except (OverflowError, TypeError, ValueError):
+        return False
 
 
 def _valid_identifier(value):
