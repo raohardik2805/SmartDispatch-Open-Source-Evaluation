@@ -1,32 +1,24 @@
-# approach.md - Required submission
+# Approach
 
-Complete this file in your own words. Be concise and specific to the work you actually performed.
+## Baseline
+- The starter test suite was inspected before changes, but a baseline run was not available in this environment.
+- The GitHub connector can read and write repository content but does not provide a local Python shell. A local clone attempt failed because outbound DNS/network access was unavailable.
+- No baseline pass/fail count is claimed.
 
-## 1. Baseline
-- Commands run before editing:
-- Initial test result (include the actual summary):
-- Demo/output observed:
+## Codebase understanding
+- `service.py` contains ETA estimation, candidate selection, and cancellation handling.
+- `models.py` defines the order and partner dictionaries used by the service.
+- `fixtures.py` supplies the offline demo inputs; `main.py` calls `assign_order`.
+- Acceptance tests specify the ETA formula, strict partner eligibility, capacity boundaries, deterministic tie-breaking, and cancellation replay behaviour.
 
-## 2. Codebase understanding
-- Important files/functions inspected:
-- Candidate filtering, ETA calculation, and capacity flow traced:
-- How you confirmed your understanding:
+## Implementation strategy
+- Centralized finite, non-negative numeric validation in `_valid_minutes`; booleans, strings, negative values, NaN, infinity, and oversized integers are rejected.
+- Made ETA estimation fail closed when identifiers, required travel legs, preparation time, current time, or workload are invalid.
+- Filtered dispatch candidates to partners whose `active` field is exactly `True`, whose capacity is a positive integer, and whose active-order count is below capacity.
+- Kept selection deterministic by comparing ETA and partner ID.
+- Made cancellation replay-safe by checking an event ID before mutating workload, while retaining deep-copy behaviour.
 
-## 3. Investigation and implementation strategy
-For each major defect, describe the symptom, hypothesis, evidence from a test/log/example, and the fix chosen.
-- Issue 1:
-- Issue 2:
-- Issue 3 (if applicable):
-
-## 4. Implementation decisions
-- Main changes and why:
-- Alternatives considered and why rejected:
-- Assumptions:
-
-## 5. Verification
-- Tests added or changed:
-- Commands run and actual results:
-- Edge cases verified:
-- Remaining failures or known limitations:
-
-Record actual engineering decisions and evidence. Do not claim tests or experiments you did not run.
+## Verification
+- Added focused regression tests in `tests/test_validation_regressions.py`.
+- The repository's GitHub Actions workflow runs the demo and visible pytest suite on pull requests. Results will be recorded in `TESTING.md` when available.
+- No local test result or performance measurement is claimed.
