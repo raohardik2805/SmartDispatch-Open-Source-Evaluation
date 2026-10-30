@@ -20,5 +20,5 @@
 
 ## Verification
 - Added focused regression tests in `tests/test_validation_regressions.py`.
-- The repository's GitHub Actions workflow runs the demo and visible pytest suite on pull requests. Results will be recorded in `TESTING.md` when available.
-- No local test result or performance measurement is claimed.
+- GitHub Actions checked out the branch, installed `requirements-dev.txt`, ran `python -m pytest -q` (**247 passed in 0.19s**), and ran `python -m main` successfully. See `TESTING.md` for the exact demo output and run link.
+- No performance benchmark was run, so no speedup is claimed.
