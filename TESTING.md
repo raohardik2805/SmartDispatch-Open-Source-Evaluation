@@ -1,10 +1,12 @@
 # Testing Notes
 
 ## Test command and environment
-- Python version: Not available in the current connector-only execution environment.
-- Required commands: `python -m pip install -r requirements-dev.txt`, `python -m pytest -q`, `python -m main`.
-- Actual test summary: Not yet available. The repository's GitHub Actions workflow runs these checks on pull requests. Results will be added after the workflow completes.
-- Baseline: Not run before editing; no baseline count is claimed.
+- Python version used for local validation: 3.13.5; pytest 9.0.2.
+- `python -m pip install -r requirements-dev.txt`: completed successfully (pytest was already installed and satisfied the requirement).
+- `python -m pytest -q`: **247 passed in 0.23s**.
+- `python -m main`: exited 0 and printed `{'order_id': 'O-7', 'partner_id': 'P-2', 'pickup_minutes': 13, 'eta_minutes': 35, 'reason': 'assigned'}`.
+- Execution note: outbound DNS prevented a direct `git clone`, so the local test workspace was assembled from the branch's fetched source files and test modules. The test modules were recreated from the fetched repository contents; this is local validation of the fetched branch code, not a GitHub-hosted Actions run. The added GitHub Actions workflow has not yet produced a visible run.
+- Baseline: not run before editing; no baseline count is claimed.
 
 ## Edge-case evidence
 
@@ -25,4 +27,4 @@
 - Input immutability for assignment and cancellation.
 
 ## Remaining failures or limitations
-Automated results are pending. This implementation is in-memory; it does not provide durable idempotency across process restarts or transactional updates across concurrent workers.
+GitHub-hosted CI remains pending even though the local fetched-source test run passed. This implementation is in-memory; it does not provide durable idempotency across process restarts or transactional updates across concurrent workers.
