@@ -8,7 +8,7 @@ Using the offline fixture in `fixtures.py`:
 - Pickup time = current time 0 + 8 + 5 = **13 minutes**.
 - Delivery ETA = 13 + 10 + 12 = **35 minutes**.
 - Partner `P-1` has no route from `Z-3` to `R-2`, so that candidate is ineligible rather than receiving a zero-minute route.
-- Expected assignment: `P-2`, ETA 35 minutes. Automated demo output is pending execution.
+- Observed GitHub Actions demo output: `{'order_id': 'O-7', 'partner_id': 'P-2', 'pickup_minutes': 13, 'eta_minutes': 35, 'reason': 'assigned'}`; the command exited successfully.
 
 ## 2. No-eligible-partner example
 For an order from restaurant `R` to destination `D`, suppose the only active partner is already at capacity and a second partner has no `(zone, R)` travel entry. The first candidate fails the capacity filter; the second cannot receive a reliable ETA. The service returns an unassigned result with null ETA and a reason explaining that no eligible partner or required time data was available.
